@@ -31,7 +31,6 @@ const categories = {
     riskTaking: 'Risk-Taking',
     innoveative: 'Innovative',
     agile: 'Agile',
-    adaptabel: 'Adaptable',
     unconventional: 'Unconventional',
     creative: 'Creative',
     experimental: 'Experimental',
@@ -95,6 +94,13 @@ const categories = {
   }
 }
 
+const cleanInput = async () =>{
+    name.value = '';
+    email.value = '';
+    position.value = '';
+    selectedCategories.value = [];
+}
+
 const checkResult = async () => {
   const attributesTotal = {
     commander: 0,
@@ -125,6 +131,7 @@ const checkResult = async () => {
   try {
     await submit(formData);
     window.alert(`Hello ${name.value}, your form has been succesfully submitted`)
+    cleanInput();
   } catch (error) {
     return error;
   }
