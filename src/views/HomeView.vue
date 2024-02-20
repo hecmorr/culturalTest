@@ -3,9 +3,10 @@ import imgUrl from '../images/HL-LOGO-WHITE FONTRGB_HORIZONTAL-INV.png'
 import { ref } from 'vue'
 
 const name = ref('')
-const position = ref('') 
+const position = ref('')
 const email = ref('')
-const scriptUrl = "https://script.google.com/macros/s/AKfycbwLeps_uHAdmFUQOlQhxHR9MgCbFHwm7PuuNRcWPCbTp71nVYJw4_MqP2QYvCMaXPv4/exec";
+const scriptUrl =
+  'https://script.google.com/macros/s/AKfycbwLeps_uHAdmFUQOlQhxHR9MgCbFHwm7PuuNRcWPCbTp71nVYJw4_MqP2QYvCMaXPv4/exec'
 
 const selectedCategories = ref<string[]>([])
 const categories = {
@@ -93,11 +94,11 @@ const categories = {
   }
 }
 
-const cleanInput = async () =>{
-    name.value = '';
-    email.value = '';
-    position.value = '';
-    selectedCategories.value = [];
+const cleanInput = async () => {
+  name.value = ''
+  email.value = ''
+  position.value = ''
+  selectedCategories.value = []
 }
 
 const checkResult = async () => {
@@ -106,79 +107,143 @@ const checkResult = async () => {
     venturer: 0,
     hustler: 0,
     teamplayer: 0,
-    adapter: 0,
-  };
+    adapter: 0
+  }
   for (const key in categories) {
-    let total = 0;
+    let total = 0
     if (Object.prototype.hasOwnProperty.call(categories, key)) {
-      Object.values(categories[key as keyof typeof categories]).forEach(attribute => {
-        if(selectedCategories.value.some(value => value == attribute)) {
-          total += 1;
+      Object.values(categories[key as keyof typeof categories]).forEach((attribute) => {
+        if (selectedCategories.value.some((value) => value == attribute)) {
+          total += 1
         }
       })
-      attributesTotal[key as keyof typeof attributesTotal] = total;
+      attributesTotal[key as keyof typeof attributesTotal] = total
     }
   }
-  const maxKey = Object.keys(attributesTotal).reduce((a, b) => attributesTotal[a as keyof typeof attributesTotal] > attributesTotal[b as keyof typeof attributesTotal] ? a : b);
+  const maxKey = Object.keys(attributesTotal).reduce((a, b) =>
+    attributesTotal[a as keyof typeof attributesTotal] >
+    attributesTotal[b as keyof typeof attributesTotal]
+      ? a
+      : b
+  )
 
-  const formData = new FormData();
+  const formData = new FormData()
   formData.append('name', `${name.value}`)
   formData.append('email', `${email.value}`)
   formData.append('position', `${position.value}`)
   formData.append('result', `${maxKey}`)
-  
+
   try {
-    await submit(formData);
+    await submit(formData)
     window.alert(`Hello ${name.value}, your form has been succesfully submitted`)
-    cleanInput();
+    cleanInput()
   } catch (error) {
-    return error;
+    return error
   }
-  
-
 }
 
-const submit = async (formData: FormData) =>{
-  const response = await fetch(scriptUrl, {body: formData, method: 'POST', mode: 'no-cors'}).catch(error=>console.log(`Error!: ${error.message}`))
+const validateForm = () => {
+  if (name.value.length < 1) {
+    alert('Please enter your name')
+    throw Error('Name is required')
+  } else if (email.value.length < 1) {
+    alert('Please enter your email')
+    throw Error('Email is required')
+  } else if (position.value.length < 1) {
+    alert('Please enter the position you are applying to')
+    throw Error('Position is required')
+  }
 }
 
+const submit = async (formData: FormData) => {
+  validateForm()
+  const response = await fetch(scriptUrl, {
+    body: formData,
+    method: 'POST',
+    mode: 'no-cors'
+  }).catch((error) => console.log(`Error!: ${error.message}`))
+}
 </script>
 
 <template>
-    <header class="flex justify-center ">
-      <div class="flex justify-evenly items-center h-[100px] w-full bg-purple-400 border rounded-md shadow-md ">
-        <img :src="imgUrl" alt="HireLatam" class="max-w-sm">  
-         <div class="flex">
-           <h1>Cultural Test</h1>
-         </div>
-        <form id="form" class=" flex flex-row gap-x-4">
-          <div class="flex">
-            <label for="name" class="mr-2">Your name: </label>
-            <input class="border rounded-md  mx-auto w-40 shadow-md" type="text" name="name" v-model="name">
-          </div>
-          <div class="flex">
-            <label for="email" class="mr-2">Email: </label>
-            <input class="border rounded-md  mx-auto w-40 shadow-md" type="text" name="email" v-model="email">
-          </div>
-          <div class="flex">
-            <label for="position" class="mr-2">Job position: </label>
-            <input class="border rounded-md  mx-auto w-40 shadow-md" type="text" name="position" v-model="position">
-          </div>
-        </form>
+  <header class="flex justify-center">
+    <div
+      class="flex justify-evenly items-center h-[100px] w-full bg-purple-400 border rounded-md shadow-md"
+    >
+      <img :src="imgUrl" alt="HireLatam" class="max-w-sm" />
+      <div class="flex">
+        <h1>Cultural Test</h1>
       </div>
-    </header>
+      <form id="form" class="flex flex-row gap-x-4">
+        <div class="flex">
+          <label for="name" class="mr-2">Your name: </label>
+          <input
+            class="border rounded-md mx-auto w-40 shadow-md"
+            type="text"
+            name="name"
+            v-model="name"
+            required
+          />
+        </div>
+        <div class="flex">
+          <label for="email" class="mr-2">Email: </label>
+          <input
+            class="border rounded-md mx-auto w-40 shadow-md"
+            type="text"
+            name="email"
+            v-model="email"
+            required
+          />
+        </div>
+        <div class="flex">
+          <label for="position" class="mr-2">Job position: </label>
+          <input
+            class="border rounded-md mx-auto w-40 shadow-md"
+            type="text"
+            name="position"
+            v-model="position"
+            required
+          />
+        </div>
+      </form>
+    </div>
+  </header>
   <main class="flex justify-center">
     <div class="flex flex-col gap-4 w-[1000px] h-[1400px] rounded-md border my-5 py-5 shadow-lg">
-      <p class="flex justify-center font-extrabold">Check the box of those that apply to your personality</p>
+      <p class="flex justify-center font-extrabold">
+        Check the box of those that apply to your personality
+      </p>
       <layout-columns class="columns-3 justify-center">
-        <ul class="flex flex-col gap-3 m-2 mx-16" v-for="(category, index) in Object.values(categories)" :key="index">
-        <li class="flex items-center gap-2 m-2" v-for="(attribute, index) in Object.values(category)" :key="index">
-          <label :for="attribute" class="ms-2 text-sm font-medium text-gray-900"> {{ attribute }}</label>
-          <input :value="attribute" v-model="selectedCategories" :id="attribute" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500"/>
-        </li>
-      </ul>
+        <ul
+          class="flex flex-col gap-3 m-2 mx-16"
+          v-for="(category, index) in Object.values(categories)"
+          :key="index"
+        >
+          <li
+            class="flex items-center gap-2 m-2"
+            v-for="(attribute, index) in Object.values(category)"
+            :key="index"
+          >
+            <label :for="attribute" class="ms-2 text-sm font-medium text-gray-900">
+              {{ attribute }}</label
+            >
+            <input
+              :value="attribute"
+              v-model="selectedCategories"
+              :id="attribute"
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500"
+            />
+          </li>
+        </ul>
       </layout-columns>
-      <button class="border m-2 font-extrabold rounded-md bg-purple-400 mx-auto h-12 w-40 shadow-md" type="submit" @click="checkResult"> Submit </button>
+      <button
+        class="border m-2 font-extrabold rounded-md bg-purple-400 mx-auto h-12 w-40 shadow-md"
+        type="submit"
+        @click="checkResult"
+      >
+        Submit
+      </button>
     </div>
   </main>
 </template>
