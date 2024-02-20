@@ -166,56 +166,57 @@ const submit = async (formData: FormData) => {
 </script>
 
 <template>
-  <header class="flex justify-center">
-    <div
-      class="flex justify-evenly items-center h-[100px] w-full bg-purple-400 border rounded-md shadow-md"
+  <header
+    class="flex flex-col content-center place-items-center gap-2 w-full h-[250px] lg:flex-row lg:h-[150px] lg:justify-evenly py-2 bg-purple-400 shadow-md"
+  >
+    <img :src="imgUrl" alt="HireLatam logo" class="w-[250px] h-24" />
+    <h3 class="lg:w-28 font-extrabold">Cultural Test</h3>
+    <form
+      id="form"
+      class="flex flex-col gap-y-2 w-full place-items-center lg:gap-x-2 lg:w-auto content-center lg:flex-row"
     >
-      <img :src="imgUrl" alt="HireLatam" class="max-w-sm" />
-      <div class="flex">
-        <h1>Cultural Test</h1>
+      <div class="flex w-4/5 lg:w-[280px] lg:gap-x-2">
+        <label for="name" class="w-28 lg:w-fit">Name: </label>
+        <input
+          class="border rounded-md w-40 shadow-md"
+          type="text"
+          name="name"
+          v-model="name"
+          required
+        />
       </div>
-      <form id="form" class="flex flex-row gap-x-4">
-        <div class="flex">
-          <label for="name" class="mr-2">Your name: </label>
-          <input
-            class="border rounded-md mx-auto w-40 shadow-md"
-            type="text"
-            name="name"
-            v-model="name"
-            required
-          />
-        </div>
-        <div class="flex">
-          <label for="email" class="mr-2">Email: </label>
-          <input
-            class="border rounded-md mx-auto w-40 shadow-md"
-            type="text"
-            name="email"
-            v-model="email"
-            required
-          />
-        </div>
-        <div class="flex">
-          <label for="position" class="mr-2">Job position: </label>
-          <input
-            class="border rounded-md mx-auto w-40 shadow-md"
-            type="text"
-            name="position"
-            v-model="position"
-            required
-          />
-        </div>
-      </form>
-    </div>
+      <div class="flex w-4/5 lg:w-[280px] lg:gap-x-2">
+        <label for="email" class="w-28 lg:w-fit">Email: </label>
+        <input
+          class="border rounded-md w-40 shadow-md"
+          type="text"
+          name="email"
+          v-model="email"
+          required
+        />
+      </div>
+      <div class="flex w-4/5 lg:w-[280px] lg:gap-x-2">
+        <label for="position" class="w-28 lg:w-fit">Job position: </label>
+        <input
+          class="border rounded-md w-40 shadow-md"
+          type="text"
+          name="position"
+          v-model="position"
+          required
+        />
+      </div>
+    </form>
   </header>
   <main class="flex justify-center">
-    <div class="flex flex-col gap-4 w-[1000px] h-[1400px] rounded-md border my-5 py-5 shadow-lg">
-      <p class="flex justify-center font-extrabold">
+    <div
+      class="flex flex-col gap-4 w-full lg:w-[1000px] h-full lg:h-[1400px] rounded-md border my-5 py-5 shadow-lg"
+    >
+      <p class="flex text-center lg:justify-center font-extrabold">
         Check the box of those that apply to your personality
       </p>
-      <layout-columns class="columns-3 justify-center">
+      <layout-columns class="columns-2 lg:columns-3 justify-center">
         <ul
-          class="flex flex-col gap-3 m-2 mx-16"
+          class="flex flex-col gap-3 m-2 mx-5 lg:mx-16"
           v-for="(category, index) in Object.values(categories)"
           :key="index"
         >
